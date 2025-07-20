@@ -16,7 +16,9 @@ pipeline {
                                                   contentType: 'APPLICATION_JSON',
                                                   consoleLogResponseBody: true,
                                                   httpMode: 'GET'
-                        if (episodes && episodes.size() > 0) {
+                         def episodes = readJSON text: apiResponse.content
+
+                         if (episodes && episodes.size() > 0) {
                             def firstEpisode = episodes[0] // Access the first element (index 0) of the list
 
                             echo "Details of the first episode:"
