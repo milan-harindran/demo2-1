@@ -36,6 +36,7 @@ pipeline {
                                 echo "----------------------------------------------------"
                             }
                             echo "--- End of Episode List ---"
+                         }
                     } catch (Exception e){
                         echo "Error calling external API: ${e.message}"
                         currentBuild.result = 'FAILURE'
