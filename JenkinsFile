@@ -18,6 +18,24 @@ pipeline {
                                                   httpMode: 'GET'
                          def episodes = readJSON text: apiResponse.content
                          echo "$episodes"
+
+                         if (episodes && episodes.size() > 0) {
+                            echo "\n--- Listing All Avatar Episodes (${episodes.size()} total) ---"
+                            echo "----------------------------------------------------"
+
+                            // 4. Iterate through each episode and print its details
+                            episodes.each { episode ->
+                                // Use Groovy's safe navigation operator (?.) to prevent errors if a field is missing
+                                // Use .join(', ') for arrays like 'WrittenBy' to print them nicely
+                                echo "Episode ID: ${episode.id ?: 'N/A'}"
+                                echo "  Title: ${episode.Title ?: 'N/A'}"
+                                echo "  Season: ${episode.Season ?: 'N/A'}, Episode Number: ${episode.NumInSeason ?: 'N/A'}"
+                                echo "  Directed By: ${episode.DirectedBy ?: 'N/A'}"
+                                echo "  Written By: ${episode.WrittenBy ? episode.WrittenBy.join(', ') : 'N/A'}"
+                                echo "  Original Air Date: ${episode.OriginalAirDate ?: 'N/A'}"
+                                echo "----------------------------------------------------"
+                            }
+                            echo "--- End of Episode List ---"
                     } catch (Exception e){
                         echo "Error calling external API: ${e.message}"
                         currentBuild.result = 'FAILURE'
