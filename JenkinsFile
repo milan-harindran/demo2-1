@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+    environment {
+        //
+    }
+    stages {
+        stage('Get Jenkins URL'){
+            echo "Jenkins URL --> $JENKINS_URL}"
+        }
+    }
+}
