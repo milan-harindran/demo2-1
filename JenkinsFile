@@ -18,8 +18,6 @@ pipeline {
                                                   httpMode: 'GET'
                          def episodes = readJSON text: apiResponse.content
                          echo "$episodes"
-                         
-                        }
                     } catch (Exception e){
                         echo "Error calling external API: ${e.message}"
                         currentBuild.result = 'FAILURE'
