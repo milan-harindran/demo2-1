@@ -36,7 +36,7 @@ pipeline {
                                     echo "  Season: ${episode.season}, Episode: ${episode.episode}"
                                 }
                             }
-
+                        }
                     } catch (Exception e){
                         echo "Error calling external API: ${e.message}"
                         currentBuild.result = 'FAILURE'
