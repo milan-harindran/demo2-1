@@ -17,7 +17,6 @@ pipeline {
                                                   consoleLogResponseBody: false,
                                                   httpMode: 'GET'
                          def episodes = readJSON text: apiResponse.content
-                         echo "$episodes"
 
                          if (episodes && episodes.size() > 0) {
                             echo "\n--- Listing All Avatar Episodes (${episodes.size()} total) ---"
@@ -42,6 +41,26 @@ pipeline {
                         currentBuild.result = 'FAILURE'
                         error('Failed to call external API')
                     }
+                }
+            }
+        }
+        stage('Get Info from Another Jenkins Pipeline Build'){
+            steps{
+                script {
+                    def otherJobName = 'demo3-3'
+                    def otherBuildNumber = '4'
+                    def jenkinsApiUrl = "${JENKINS_URL}job/${otherJobName}/${otherBuildNumber}/api/json"
+
+                    def buildInfoResponse = httpRequest url: jenkinsApiUrl,
+                                                  contentType: 'APPLICATION_JSON',
+                                                  consoleLogResponseBody: false,
+                                                  httpMode: 'GET'
+                    echo "Jenkins API Response Status: ${buildInfoResponse.status}"
+                    echo "Jenkins API Response Body: ${buildInfoResponse.content}"
+
+                    def buildInfo = readJSON text: buildInfoResponse.content
+                    echo "Other job '${otherJobName}' build ${buildInfo.id} result: ${buildInfo.result}"
+                    echo "Other job description: ${buildInfo.description}"
                 }
             }
         }
