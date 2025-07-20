@@ -6,5 +6,24 @@ pipeline {
                 echo "Jenkins URL --> $JENKINS_URL}"
             }
         }
+        stage('Call External API'){
+            steps {
+                //we use groovy in script tag here to write the code 
+                script {
+                    def apiResponse
+                    try{
+                        apiResponse = httpRequest url: 'https://api.sampleapis.com/avatar/episodes'
+                                                  httpMode: 'GET'
+                        def jsonResponse = readJSON text: apiResponse.content
+                        echo "Parsed value from API: ${jsonResponse.some_field}"
+
+                    } catch (Exception e){
+                        echo "Error calling external API: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        error('Failed to call external API')
+                    }
+                }
+            }
+        }
     }
 }
