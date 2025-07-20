@@ -12,7 +12,9 @@ pipeline {
                 script {
                     def apiResponse
                     try{
-                        apiResponse = httpRequest url: 'https://api.sampleapis.com/avatar/episodes'
+                        apiResponse = httpRequest url: 'https://api.sampleapis.com/avatar/episodes',
+                                                  contentType: 'APPLICATION_JSON',
+                                                  consoleLogResponseBody: true,
                                                   httpMode: 'GET'
                         def jsonResponse = readJSON text: apiResponse.content
                         echo "Parsed value from API: ${jsonResponse.some_field}"
