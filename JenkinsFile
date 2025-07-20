@@ -16,8 +16,26 @@ pipeline {
                                                   contentType: 'APPLICATION_JSON',
                                                   consoleLogResponseBody: true,
                                                   httpMode: 'GET'
-                        def jsonResponse = readJSON text: apiResponse.content
-                        echo "Parsed value from API: ${jsonResponse.some_field}"
+                        if (episodes && episodes.size() > 0) {
+                            def firstEpisode = episodes[0] // Access the first element (index 0) of the list
+
+                            echo "Details of the first episode:"
+                            echo "  ID: ${firstEpisode.id}"         // Access 'id' field
+                            echo "  Name: ${firstEpisode.name}"       // Access 'name' field
+                            echo "  Season: ${firstEpisode.season}"     // Access 'season' field
+                            echo "  Episode: ${firstEpisode.episode}"   // Access 'episode' field
+                            echo "  Air Date: ${firstEpisode.airDate}"  // Access 'airDate' field
+
+                            // Example: Loop through a few episodes
+                            echo "\n--- First 3 Episodes ---"
+                            episodes.eachWithIndex { episode, index ->
+                                if (index < 3) { // Limit to first 3 for brevity
+                                    echo "Episode ${index + 1}:"
+                                    echo "  ID: ${episode.id}"
+                                    echo "  Name: ${episode.name}"
+                                    echo "  Season: ${episode.season}, Episode: ${episode.episode}"
+                                }
+                            }
 
                     } catch (Exception e){
                         echo "Error calling external API: ${e.message}"
