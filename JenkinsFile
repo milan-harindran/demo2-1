@@ -53,7 +53,7 @@ pipeline {
 
                     def buildInfoResponse = httpRequest url: jenkinsApiUrl,
                                                   contentType: 'APPLICATION_JSON',
-                                                  authentication: 'jenkins-api-token',
+                                                  authentication: '11b1829c85bcde026e669176bfc52dd95c',
                                                   consoleLogResponseBody: false,
                                                   httpMode: 'GET'
                     echo "Jenkins API Response Status: ${buildInfoResponse.status}"
