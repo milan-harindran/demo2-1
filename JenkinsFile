@@ -59,9 +59,7 @@ pipeline {
                                                 contentType: 'APPLICATION_JSON',
                                                 consoleLogResponseBody: false,
                                                 httpMode: 'GET',
-                                                headers: [
-                                                    "Authorization": "Basic ${encodedCreds}"
-                                                ]
+                                                customHeaders: [[name: 'Authorization', value: "Basic ${encodedCreds}"]]
                     echo "Jenkins API Response Status: ${buildInfoResponse.status}"
                     echo "Jenkins API Response Body: ${buildInfoResponse.content}"
 
