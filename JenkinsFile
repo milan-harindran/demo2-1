@@ -53,15 +53,13 @@ pipeline {
                     def otherJobName = 'demo3-3'
                     def otherBuildNumber = '4'
                     def jenkinsApiUrl = "${JENKINS_URL}job/${otherJobName}/${otherBuildNumber}/api/json"
-                    withCredentials([string(credentialsId: 'jenkins-api-token', variable: 'API_TOKEN')]) {
-                        def buildInfoResponse = httpRequest url: jenkinsApiUrl,
-                                                    contentType: 'APPLICATION_JSON',
-                                                    authentication: "${API_TOKEN}",
-                                                    consoleLogResponseBody: false,
-                                                    httpMode: 'GET'
-                        echo "Jenkins API Response Status: ${buildInfoResponse.status}"
-                        echo "Jenkins API Response Body: ${buildInfoResponse.content}"
-                    }
+                    def buildInfoResponse = httpRequest url: jenkinsApiUrl,
+                                                contentType: 'APPLICATION_JSON',
+                                                authentication: "$API_TOKEN",
+                                                consoleLogResponseBody: false,
+                                                httpMode: 'GET'
+                    echo "Jenkins API Response Status: ${buildInfoResponse.status}"
+                    echo "Jenkins API Response Body: ${buildInfoResponse.content}"
 
                     def buildInfo = readJSON text: buildInfoResponse.content
                     echo "Other job '${otherJobName}' build ${buildInfo.id} result: ${buildInfo.result}"
