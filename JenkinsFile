@@ -54,7 +54,7 @@ pipeline {
                         $username = "${username}"
                         $password = "${password}"
                         $pair = "${username}:${password}"
-                        $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+                        $encodedCreds = Base64.encoder.encodeToString(pair.getBytes("US-ASCII"))
                         def buildInfoResponse = httpRequest url: jenkinsApiUrl,
                                                 contentType: 'APPLICATION_JSON',
                                                 authentication: 'jenkins-api-token',
