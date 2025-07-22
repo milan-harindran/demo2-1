@@ -54,14 +54,14 @@ pipeline {
                         $username = "${username}"
                         $password = "${password}"
                         $pair = "${username}:${password}"
-                        $encodedCreds = Base64.encoder.encodeToString(pair.getBytes("US-ASCII"))
+                        $encodedCreds = Base64.encoder.encodeToString($pair.getBytes("US-ASCII"))
                         def buildInfoResponse = httpRequest url: jenkinsApiUrl,
                                                 contentType: 'APPLICATION_JSON',
                                                 consoleLogResponseBody: false,
                                                 httpMode: 'GET',
                                                 customHeaders: [[name: 'Authorization', value: "Basic ${encodedCreds}"]]
                     }
-                    
+
                     echo "Jenkins API Response Status: ${buildInfoResponse.status}"
                     echo "Jenkins API Response Body: ${buildInfoResponse.content}"
 
