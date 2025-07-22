@@ -50,11 +50,19 @@ pipeline {
                     def otherJobName = 'demo3-3'
                     def otherBuildNumber = '4'
                     def jenkinsApiUrl = "${JENKINS_URL}job/${otherJobName}/${otherBuildNumber}/api/json"
-                    def buildInfoResponse = httpRequest url: jenkinsApiUrl,
+                    withCredentials([usernamePassword(credentialsId: 'credentials', usernameVariable: 'username', passwordVariable: 'password')]) {
+                        $username = "${username}"
+                        $password = "${password}"
+                        $pair = "${username}:${password}"
+                        $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+                        def buildInfoResponse = httpRequest url: jenkinsApiUrl,
                                                 contentType: 'APPLICATION_JSON',
                                                 authentication: 'jenkins-api-token',
                                                 consoleLogResponseBody: false,
-                                                httpMode: 'GET'
+                                                httpMode: 'GET',
+                                                headers: [
+                                                    "Authorization": "Basic ${encodedCreds}"
+                                                ]
                     echo "Jenkins API Response Status: ${buildInfoResponse.status}"
                     echo "Jenkins API Response Body: ${buildInfoResponse.content}"
 
