@@ -45,6 +45,9 @@ pipeline {
             }
         }
         stage('Get Info from Another Jenkins Pipeline Build'){
+            environment {
+                API_TOKEN = credentials('jenkins-api-token')
+            }
             steps{
                 script {
                     def otherJobName = 'demo3-3'
