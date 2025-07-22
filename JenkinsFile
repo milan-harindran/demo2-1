@@ -45,9 +45,6 @@ pipeline {
             }
         }
         stage('Get Info from Another Jenkins Pipeline Build'){
-            environment {
-                API_TOKEN = credentials('jenkins-api-token')
-            }
             steps{
                 script {
                     def otherJobName = 'demo3-3'
@@ -55,7 +52,7 @@ pipeline {
                     def jenkinsApiUrl = "${JENKINS_URL}job/${otherJobName}/${otherBuildNumber}/api/json"
                     def buildInfoResponse = httpRequest url: jenkinsApiUrl,
                                                 contentType: 'APPLICATION_JSON',
-                                                authentication: "$API_TOKEN",
+                                                authentication: 'jenkins-api-token',
                                                 consoleLogResponseBody: false,
                                                 httpMode: 'GET'
                     echo "Jenkins API Response Status: ${buildInfoResponse.status}"
